@@ -5,7 +5,6 @@ import { Plan, ProgressEntry, WeeklyPlan } from '../models';
 import { isWithinReminderWindow } from '../utils/dateHelpers';
 import { refreshRemindersForDate } from '../utils/reminderScheduler';
 
-// Get progress entries for a date range
 export const getProgressEntries = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) {
@@ -21,7 +20,6 @@ export const getProgressEntries = async (req: AuthRequest, res: Response) => {
 
     const filter: Record<string, unknown> = { userId: req.user._id };
     if (startDate && endDate) {
-      // Normalize dates to UTC to avoid timezone issues
       const start = new Date(startDate);
       start.setUTCHours(0, 0, 0, 0);
       const end = new Date(endDate);
@@ -47,7 +45,6 @@ export const getProgressEntries = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Get single progress entry by date
 export const getProgressEntryByDate = async (
   req: AuthRequest,
   res: Response
@@ -60,7 +57,6 @@ export const getProgressEntryByDate = async (
     }
 
     const { date } = req.params;
-    // Parse date and normalize to UTC to avoid timezone issues
     const entryDate = new Date(date + 'T00:00:00.000Z');
     const startOfDay = new Date(entryDate);
     startOfDay.setUTCHours(0, 0, 0, 0);
@@ -92,7 +88,6 @@ export const getProgressEntryByDate = async (
   }
 };
 
-// Create or update progress entry
 export const upsertProgressEntry = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) {
@@ -120,9 +115,7 @@ export const upsertProgressEntry = async (req: AuthRequest, res: Response) => {
         .json({ error: 'Validation error', message: 'Date is required' });
     }
 
-    // Parse date and normalize to UTC to avoid timezone issues
     const entryDate = new Date(date + 'T00:00:00.000Z');
-    // Normalize to start of day in UTC
     const normalizedDate = new Date(
       Date.UTC(
         entryDate.getUTCFullYear(),
@@ -156,7 +149,6 @@ export const upsertProgressEntry = async (req: AuthRequest, res: Response) => {
     if (planType) updateData.planType = planType;
     if (notes !== undefined) updateData.notes = notes;
 
-    // Use range query to find existing entry
     const startOfDay = new Date(normalizedDate);
     startOfDay.setUTCHours(0, 0, 0, 0);
     const endOfDay = new Date(normalizedDate);
@@ -195,7 +187,6 @@ export const upsertProgressEntry = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Apply daily plan to date range
 export const applyDailyPlan = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) {
@@ -226,7 +217,6 @@ export const applyDailyPlan = async (req: AuthRequest, res: Response) => {
         .json({ error: 'Not found', message: 'Plan not found' });
     }
 
-    // Parse dates and normalize to UTC to avoid timezone issues
     const start = new Date(startDate + 'T00:00:00.000Z');
     const end = new Date(endDate + 'T23:59:59.999Z');
 
@@ -234,7 +224,6 @@ export const applyDailyPlan = async (req: AuthRequest, res: Response) => {
     const currentDate = new Date(start);
 
     while (currentDate <= end) {
-      // Create date at midnight UTC for this day
       const entryDate = new Date(
         Date.UTC(
           currentDate.getUTCFullYear(),

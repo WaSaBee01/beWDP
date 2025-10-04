@@ -79,7 +79,7 @@ export const createMealPlan = async (req: AuthRequest, res: Response): Promise<v
     }
     return res.status(500).json({
       error: 'Internal server error',
-      message: 'Failed to create meal plan',
+      message: 'Failed ',
     });
   }
 };
@@ -89,7 +89,7 @@ export const updateMealPlan = async (req: AuthRequest, res: Response): Promise<v
     if (!req.user) {
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'User not authenticated',
+        message: 'Unauthorized',
       });
     }
 

@@ -7,7 +7,6 @@ export const getOverview = async (req: AuthRequest, res: Response) => {
     if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'User not authenticated' });
 
     const [usersActive, exercises, meals, dailyPlans, weeklyPlans] = await Promise.all([
-      // Tính người dùng active: coi như active nếu isActive=true hoặc chưa có trường (legacy)
       User.countDocuments({ role: 'user', $or: [{ isActive: true }, { isActive: { $exists: false } }] }),
       Exercise.countDocuments({}),
       Meal.countDocuments({}),

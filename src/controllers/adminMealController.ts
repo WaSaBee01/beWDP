@@ -2,7 +2,6 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { Meal } from '../models';
 
-// Helper function to validate decimal with max 2 decimal places
 const validateDecimal = (value: number, fieldName: string): string | null => {
   if (value < 0) {
     return `${fieldName} cannot be negative`;
@@ -47,7 +46,7 @@ export const getAllMeals = async (req: AuthRequest, res: Response): Promise<void
     };
 
     const filter: Record<string, unknown> = {
-      isCommon: true, // Admin chỉ xem các meal do admin tạo (isCommon = true)
+      isCommon: true,
     };
 
     if (isTemplate !== undefined) {
@@ -87,7 +86,6 @@ export const createMeal = async (req: AuthRequest, res: Response): Promise<void 
 
     const { name, description, ingredients, image, calories, carbs, protein, fat, weightGrams }: CreateMealRequest = req.body;
 
-    // Validate required fields
     if (
       !name ||
       calories === undefined ||
@@ -168,7 +166,6 @@ export const updateMeal = async (req: AuthRequest, res: Response): Promise<void 
     const { id } = req.params;
     const updateData = req.body;
 
-    // Validate decimal places (max 2) for nutrition values
     if (updateData.calories !== undefined) {
       const error = validateDecimal(updateData.calories, 'Calories');
       if (error) {

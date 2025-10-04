@@ -19,7 +19,7 @@ export const getAllPlans = async (req: AuthRequest, res: Response) => {
         .json({ error: 'Unauthorized', message: 'User not authenticated' });
     const { search } = req.query as { search?: string };
     const filter: any = {
-      isCommon: true, // Admin chỉ xem các plan do admin tạo (isCommon = true)
+      isCommon: true, 
     };
     if (search) filter.$text = { $search: search };
     const plans = await Plan.find(filter)
@@ -40,7 +40,6 @@ export const createPlan = async (req: AuthRequest, res: Response) => {
     const { name, description, meals, exercises, goal }: { name: string; description?: string; meals: PlanMealInput[]; exercises: PlanExerciseInput[]; goal?: 'weight_loss' | 'muscle_gain' | 'healthy_lifestyle' } = req.body;
     if (!name) return res.status(400).json({ error: 'Validation error', message: 'Name is required' });
 
-    // Compute totals
     let caloriesIn = 0, carbs = 0, protein = 0, fat = 0, caloriesOut = 0;
     if (Array.isArray(meals)) {
       const mealIds = meals.map(m => m.meal);
@@ -119,7 +118,7 @@ export const updatePlan = async (req: AuthRequest, res: Response) => {
     if (!plan) return res.status(404).json({ error: 'Not found', message: 'Plan not found' });
     return res.status(200).json({ success: true, data: plan });
   } catch {
-    return res.status(500).json({ error: 'Internal server error', message: 'Failed to update plan' });
+    return res.status(500).json({ error: 'Internal server error', message: 'update failed' });
   }
 };
 
@@ -129,7 +128,7 @@ export const deletePlan = async (req: AuthRequest, res: Response) => {
     const { id } = req.params;
     const plan = await Plan.findByIdAndDelete(id);
     if (!plan) return res.status(404).json({ error: 'Not found', message: 'Plan not found' });
-    return res.status(200).json({ success: true, message: 'Plan deleted successfully' });
+    return res.status(200).json({ success: true, message: ' deleted successfully' });
   } catch {
     return res.status(500).json({ error: 'Internal server error', message: 'Failed to delete plan' });
   }
