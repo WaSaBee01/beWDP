@@ -3,7 +3,6 @@ import { Response } from 'express';
 import multer from 'multer';
 import { AuthRequest } from '../middleware/auth';
 
-// Lazy initialization - configure Cloudinary only when needed
 let cloudinaryConfigured = false;
 
 const configureCloudinary = (): void => {

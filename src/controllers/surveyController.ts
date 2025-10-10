@@ -16,13 +16,11 @@ interface CreateSurveyRequest {
   allergies?: string[];
 }
 
-// Calculate BMI
 const calculateBMI = (weight: number, height: number): number => {
   const heightInMeters = height / 100;
   return Number((weight / (heightInMeters * heightInMeters)).toFixed(1));
 };
 
-// Calculate BMR (Mifflin-St Jeor) — expects metric inputs
 const calculateBMR = (gender: 'male' | 'female', weightKg: number, heightCm: number, age: number): number => {
   const base = 10 * weightKg + 6.25 * heightCm - 5 * age;
   const bmr = gender === 'male' ? base + 5 : base - 161;
@@ -41,7 +39,6 @@ export const createSurvey = async (req: AuthRequest, res: Response): Promise<voi
     const { goal, weight, height, weightLbs, heightInches, workoutDays, workoutDuration, fitnessLevel, gender, age, allergies } =
       req.body as CreateSurveyRequest;
 
-    // Validate required fields
     if (!goal || (!weight && !weightLbs) || (!height && !heightInches) || !workoutDays || !workoutDuration || !fitnessLevel) {
       return res.status(400).json({
         error: 'Validation error',
@@ -49,11 +46,9 @@ export const createSurvey = async (req: AuthRequest, res: Response): Promise<voi
       });
     }
 
-    // Derive metric units
     const weightKg = weight !== undefined ? weight : Number(((weightLbs as number) * 0.453592).toFixed(2));
     const heightCm = height !== undefined ? height : Number(((heightInches as number) * 2.54).toFixed(2));
 
-    // Validate ranges in metric
     if (weightKg < 20 || weightKg > 300) {
       return res.status(400).json({
         error: 'Validation error',
@@ -68,16 +63,13 @@ export const createSurvey = async (req: AuthRequest, res: Response): Promise<voi
       });
     }
 
-    // Calculate BMI
     const bmi = calculateBMI(weightKg, heightCm);
 
-    // Calculate BMR if possible
     let dailyCalories: number | undefined;
     if (gender && age) {
       dailyCalories = calculateBMR(gender, weightKg, heightCm, age);
     }
 
-    // Check if survey already exists
     const existingSurvey = await UserSurvey.findOne({ userId: req.user._id });
 
     let survey;

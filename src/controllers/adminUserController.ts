@@ -14,7 +14,7 @@ export const listUsers = async (req: AuthRequest, res: Response) => {
 
 export const setActive = async (req: AuthRequest, res: Response) => {
   try {
-    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'User not authenticated' });
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'Unauthorized' });
     const { id } = req.params;
     const { isActive } = req.body as { isActive: boolean };
     const user = await User.findOneAndUpdate({ _id: id, role: 'user' }, { isActive }, { new: true }).select('_id name email role isActive');
