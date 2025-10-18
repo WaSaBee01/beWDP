@@ -159,7 +159,6 @@ export const deleteMealPlan = async (req: AuthRequest, res: Response): Promise<v
   }
 };
 
-// Helper function to calculate daily totals
 export const calculateDailyTotals = (mealPlan: any) => {
   const totals: Record<string, { calories: number; carbs: number; protein: number; fat: number }> = {};
 
