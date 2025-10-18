@@ -14,13 +14,11 @@ export const errorHandler = (
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal Server Error';
 
-  // Mongoose validation error
   if (err.name === 'ValidationError') {
     statusCode = 400;
     message = 'Validation Error';
   }
 
-  // Mongoose duplicate key error
   if (err.name === 'MongoServerError' && (err as any).code === 11000) {
     statusCode = 400;
     message = 'Duplicate field value';
@@ -29,12 +27,12 @@ export const errorHandler = (
   // JWT errors
   if (err.name === 'JsonWebTokenError') {
     statusCode = 401;
-    message = 'Invalid token';
+    message = 'Token invalid';
   }
 
   if (err.name === 'TokenExpiredError') {
     statusCode = 401;
-    message = 'Token expired';
+    message = 'Token has expired';
   }
 
   console.error('Error:', {

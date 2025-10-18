@@ -3,12 +3,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IExercise extends Document {
   name: string;
   description?: string;
-  durationMinutes: number; // thời gian tập (phút)
+  durationMinutes: number; 
   caloriesBurned: number; // calo tiêu thụ
   videoUrl?: string; // link youtube
   difficulty: 'basic' | 'intermediate' | 'advanced';
-  isCommon: boolean; // true nếu do admin tạo, dùng chung
-  createdBy?: string; // Admin user ID
+  isCommon: boolean; 
+  createdBy?: string; 
   createdAt: Date;
   updatedAt: Date;
 }

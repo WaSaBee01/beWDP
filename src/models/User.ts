@@ -7,8 +7,8 @@ export interface IUser extends Document {
   avatar?: string;
   googleId?: string;
   role: 'user' | 'admin';
-  subscriptionStatus: 'free' | 'premium'; // Keep for backward compatibility
-  subscriptionExpiresAt?: Date; // Keep for backward compatibility
+  subscriptionStatus: 'free' | 'premium'; 
+  subscriptionExpiresAt?: Date; 
   isVip: boolean;
   vipExpiresAt?: Date;
   isFirstLogin: boolean;

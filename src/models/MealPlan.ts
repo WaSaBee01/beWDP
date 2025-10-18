@@ -4,8 +4,8 @@ export interface IMealPlan extends Document {
   userId: string;
   weekStartDate: Date;
   meals: {
-    day: string; // 'monday', 'tuesday', etc.
-    breakfast?: string; // Meal ID
+    day: string; 
+    breakfast?: string; 
     lunch?: string;
     dinner?: string;
     snack?: string;

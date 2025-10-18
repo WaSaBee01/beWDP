@@ -1,10 +1,10 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface IComment extends Document {
-  exerciseId: Types.ObjectId; // Reference to Exercise
+  exerciseId: Types.ObjectId; 
   userId: Types.ObjectId; // Reference to User (who commented)
   content: string;
-  parentCommentId?: Types.ObjectId; // Reference to parent comment (if this is a reply)
+  parentCommentId?: Types.ObjectId; 
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,7 +40,6 @@ const commentSchema = new Schema<IComment>(
   }
 );
 
-// Indexes for faster queries
 commentSchema.index({ exerciseId: 1, createdAt: -1 });
 commentSchema.index({ parentCommentId: 1 });
 
