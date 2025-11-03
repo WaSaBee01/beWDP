@@ -4,10 +4,8 @@ import { authenticate } from '../middleware/auth';
 
 const router = express.Router();
 
-// All meal plan routes require authentication
 router.use(authenticate as any);
 
-// Meal plan routes
 router.get('/', getAllMealPlans as any);
 router.post('/', createMealPlan as any);
 router.put('/:id', updateMealPlan as any);

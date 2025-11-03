@@ -21,29 +21,23 @@ import statisticsRoutes from './routes/statisticsRoutes';
 import surveyRoutes from './routes/surveyRoutes';
 import userLibraryRoutes from './routes/userLibraryRoutes';
 
-// Load environment variables FIRST
-// Try to load from backend/.env first, fallback to root .env
 const envPath = dotenv.config({ path: '.env' });
 if (envPath.error) {
   console.warn('⚠️  Could not load .env file from backend directory, trying root directory...');
   dotenv.config({ path: '../.env' });
 }
 
-// Log Cloudinary config status (without exposing secrets)
 console.log('🔧 Environment variables loaded:');
 console.log(`   CLOUDINARY_CLOUD_NAME: ${process.env.CLOUDINARY_CLOUD_NAME ? '✅ Set' : '❌ Missing'}`);
 console.log(`   CLOUDINARY_API_KEY: ${process.env.CLOUDINARY_API_KEY ? '✅ Set' : '❌ Missing'}`);
 console.log(`   CLOUDINARY_API_SECRET: ${process.env.CLOUDINARY_API_SECRET ? '✅ Set' : '❌ Missing'}`);
 
-// Initialize passport strategies AFTER dotenv
 import './config/passport';
 
 const app = express();
 
-// Security middleware
 app.use(helmet());
 
-// CORS configuration
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -51,17 +45,13 @@ app.use(
   })
 );
 
-// Logging
 app.use(morgan('combined'));
 
-// Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Initialize passport
 app.use(passport.initialize());
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -87,7 +77,6 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/statistics', statisticsRoutes);
 
-// 404 for undefined API routes
 app.use('/api', (req, res) => {
   res.status(404).json({
     error: 'API endpoint not found',
@@ -95,7 +84,6 @@ app.use('/api', (req, res) => {
   });
 });
 
-// Error handling middleware (must be last)
 app.use(errorHandler);
 
 // 404 handler

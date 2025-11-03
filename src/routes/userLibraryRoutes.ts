@@ -37,7 +37,6 @@ const router = express.Router();
 
 router.use(authenticate as any);
 
-// Upload with error handling
 const uploadMiddleware = (
   req: express.Request,
   res: express.Response,

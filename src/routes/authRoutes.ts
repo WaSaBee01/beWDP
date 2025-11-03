@@ -5,11 +5,10 @@ import { authenticate } from '../middleware/auth';
 
 const router = express.Router();
 
-// Email/Password routes
 router.post('/register', register as any);
 router.post('/login', login as any);
 
-// Google OAuth routes
+// Google OAuth router
 router.get(
   '/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })

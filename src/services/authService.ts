@@ -16,6 +16,7 @@ export interface UserToken {
   role: string;
 }
 
+// Generate JWT token for a user
 export const generateToken = (user: UserToken): string => {
   const payload: JWTPayload = {
     userId: (user._id as any).toString(),
@@ -28,6 +29,7 @@ export const generateToken = (user: UserToken): string => {
   });
 };
 
+// Verify and decode JWT token
 export const verifyToken = (token: string): JWTPayload => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
@@ -37,6 +39,9 @@ export const verifyToken = (token: string): JWTPayload => {
   }
 };
 
+
+
+// Decode JWT token without verification
 export const decodeToken = (token: string): JWTPayload | null => {
   try {
     const decoded = jwt.decode(token) as JWTPayload;
