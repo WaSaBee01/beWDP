@@ -194,24 +194,6 @@ export const refreshRemindersForDate = async (userId: Types.ObjectId | string, d
   }
 };
 
-const scheduleLookaheadEntries = async () => {
-  const now = new Date();
-  const target = new Date(now);
-  target.setUTCDate(target.getUTCDate() + LOOKAHEAD_DAYS());
-  const { start, end } = getDateRange(target);
-
-  const entries = await ProgressEntry.find({
-    date: { $gte: start, $lte: end },
-  })
-    .populate('meals.mealId')
-    .populate('exercises.exerciseId');
-
-  await Promise.all(entries.map((entry) => scheduleEntryReminders(entry)));
-  console.log(
-    `[ReminderScheduler] Lookahead scheduled for ${entries.length} entries (targetDate=${getDateKey(target)})`
-  );
-};
-
 export const initReminderScheduler = async () => {
   if (nightlyJob) {
     nightlyJob.stop();
@@ -233,5 +215,25 @@ export const initReminderScheduler = async () => {
   nightlyJob.start();
   console.log('📧 Reminder scheduler initialized');
 };
+
+const scheduleLookaheadEntries = async () => {
+  const now = new Date();
+  const target = new Date(now);
+  target.setUTCDate(target.getUTCDate() + LOOKAHEAD_DAYS());
+  const { start, end } = getDateRange(target);
+
+  const entries = await ProgressEntry.find({
+    date: { $gte: start, $lte: end },
+  })
+    .populate('meals.mealId')
+    .populate('exercises.exerciseId');
+
+  await Promise.all(entries.map((entry) => scheduleEntryReminders(entry)));
+  console.log(
+    `[ReminderScheduler] Lookahead scheduled for ${entries.length} entries (targetDate=${getDateKey(target)})`
+  );
+};
+
+
 
 

@@ -13,7 +13,6 @@ export const connectDB = async (): Promise<void> => {
   }
 };
 
-// Handle connection events
 mongoose.connection.on('connected', () => {
   console.log('Mongoose connected to MongoDB');
 });
@@ -26,7 +25,6 @@ mongoose.connection.on('disconnected', () => {
   console.log('Mongoose disconnected');
 });
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
   console.log('MongoDB connection closed through app termination');
