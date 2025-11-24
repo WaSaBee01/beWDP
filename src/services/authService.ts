@@ -29,7 +29,6 @@ export const generateToken = (user: UserToken): string => {
   });
 };
 
-// Verify and decode JWT token
 export const verifyToken = (token: string): JWTPayload => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
@@ -41,7 +40,6 @@ export const verifyToken = (token: string): JWTPayload => {
 
 
 
-// Decode JWT token without verification
 export const decodeToken = (token: string): JWTPayload | null => {
   try {
     const decoded = jwt.decode(token) as JWTPayload;

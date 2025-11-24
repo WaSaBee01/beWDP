@@ -46,6 +46,19 @@ export const createWeeklyPlan = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const deleteWeeklyPlan = async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'Unauthorized' });
+    const { id } = req.params;
+    const wp = await WeeklyPlan.findByIdAndDelete(id);
+    if (!wp) return res.status(404).json({ error: 'Not found', message: 'Weekly plan not found' });
+    return res.status(200).json({ success: true, message: ' deleted successfully' });
+  } catch {
+    return res.status(500).json({ error: 'Internal server error', message: 'Failed to delete weekly plan' });
+  }
+};
+
+
 export const updateWeeklyPlan = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'Unauthorized' });
@@ -64,16 +77,5 @@ export const updateWeeklyPlan = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteWeeklyPlan = async (req: AuthRequest, res: Response) => {
-  try {
-    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'Unauthorized' });
-    const { id } = req.params;
-    const wp = await WeeklyPlan.findByIdAndDelete(id);
-    if (!wp) return res.status(404).json({ error: 'Not found', message: 'Weekly plan not found' });
-    return res.status(200).json({ success: true, message: ' deleted successfully' });
-  } catch {
-    return res.status(500).json({ error: 'Internal server error', message: 'Failed to delete weekly plan' });
-  }
-};
 
 

@@ -32,37 +32,6 @@ export const getAllMeals = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
-export const getMealById = async (req: AuthRequest, res: Response): Promise<void | Response> => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'User not authenticated',
-      });
-    }
-
-    const { id } = req.params;
-    const meal = await Meal.findById(id);
-
-    if (!meal) {
-      return res.status(404).json({
-        error: 'Not found',
-        message: 'Meal not found',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: meal,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to get meal',
-    });
-  }
-};
-
 export const getTemplateMeals = async (req: AuthRequest, res: Response): Promise<void | Response> => {
   try {
     if (!req.user) {
@@ -94,4 +63,36 @@ export const getTemplateMeals = async (req: AuthRequest, res: Response): Promise
     });
   }
 };
+export const getMealById = async (req: AuthRequest, res: Response): Promise<void | Response> => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'User not authenticated',
+      });
+    }
+
+    const { id } = req.params;
+    const meal = await Meal.findById(id);
+
+    if (!meal) {
+      return res.status(404).json({
+        error: 'Not found',
+        message: 'Meal not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: meal,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to get meal',
+    });
+  }
+};
+
+
 

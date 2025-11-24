@@ -59,11 +59,9 @@ export const handleVipPaymentSuccess = async (req: AuthRequest, res: Response): 
       // Add 1 month
       expiresAt.setMonth(expiresAt.getMonth() + 1);
     } else {
-      // Add 12 months (1 year)
       expiresAt.setFullYear(expiresAt.getFullYear() + 1);
     }
 
-    // If user already has VIP and not expired, extend from current expiration
     if (user.isVip && user.vipExpiresAt && user.vipExpiresAt > new Date()) {
       expiresAt.setTime(user.vipExpiresAt.getTime());
       if (type === 'monthly') {

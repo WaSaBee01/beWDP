@@ -75,6 +75,7 @@ export const getAllMeals = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
+//create meal
 export const createMeal = async (req: AuthRequest, res: Response): Promise<void | Response> => {
   try {
     if (!req.user) {
@@ -154,6 +155,39 @@ export const createMeal = async (req: AuthRequest, res: Response): Promise<void 
   }
 };
 
+export const deleteMeal = async (req: AuthRequest, res: Response): Promise<void | Response> => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'User not authenticated',
+      });
+    }
+
+    const { id } = req.params;
+
+    const meal = await Meal.findByIdAndDelete(id);
+
+    if (!meal) {
+      return res.status(404).json({
+        error: 'Not found',
+        message: 'Meal not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Meal deleted successfully',
+    });
+  } catch {
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to delete meal',
+    });
+  }
+};
+
+// Update an existing meal
 export const updateMeal = async (req: AuthRequest, res: Response): Promise<void | Response> => {
   try {
     if (!req.user) {
@@ -224,35 +258,4 @@ export const updateMeal = async (req: AuthRequest, res: Response): Promise<void 
   }
 };
 
-export const deleteMeal = async (req: AuthRequest, res: Response): Promise<void | Response> => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'User not authenticated',
-      });
-    }
-
-    const { id } = req.params;
-
-    const meal = await Meal.findByIdAndDelete(id);
-
-    if (!meal) {
-      return res.status(404).json({
-        error: 'Not found',
-        message: 'Meal not found',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Meal deleted successfully',
-    });
-  } catch {
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to delete meal',
-    });
-  }
-};
 

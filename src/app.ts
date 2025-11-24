@@ -28,9 +28,9 @@ if (envPath.error) {
 }
 
 console.log('🔧 Environment variables loaded:');
-console.log(`   CLOUDINARY_CLOUD_NAME: ${process.env.CLOUDINARY_CLOUD_NAME ? '✅ Set' : '❌ Missing'}`);
-console.log(`   CLOUDINARY_API_KEY: ${process.env.CLOUDINARY_API_KEY ? '✅ Set' : '❌ Missing'}`);
-console.log(`   CLOUDINARY_API_SECRET: ${process.env.CLOUDINARY_API_SECRET ? '✅ Set' : '❌ Missing'}`);
+console.log(`   CLOUDINARY_CLOUD_NAME: ${process.env.CLOUDINARY_CLOUD_NAME ? ' Set' : ' Missing'}`);
+console.log(`   CLOUDINARY_API_KEY: ${process.env.CLOUDINARY_API_KEY ? ' Set' : ' Missing'}`);
+console.log(`   CLOUDINARY_API_SECRET: ${process.env.CLOUDINARY_API_SECRET ? ' Set' : ' Missing'}`);
 
 import './config/passport';
 
@@ -60,18 +60,17 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/survey', surveyRoutes);
 app.use('/api/meals', mealRoutes);
 app.use('/api/meal-plans', mealPlanRoutes);
 app.use('/api/food-diary', foodDiaryRoutes);
 app.use('/api/admin/meals', adminMealRoutes);
+app.use('/api/admin/users', adminUserRoutes);
+app.use('/api/admin/overview', adminOverviewRoutes);
 app.use('/api/admin/exercises', adminExerciseRoutes);
 app.use('/api/admin/plans', adminPlanRoutes);
 app.use('/api/admin/weekly-plans', adminWeeklyPlanRoutes);
-app.use('/api/admin/users', adminUserRoutes);
-app.use('/api/admin/overview', adminOverviewRoutes);
 app.use('/api/user', userLibraryRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/progress', progressRoutes);
@@ -86,7 +85,6 @@ app.use('/api', (req, res) => {
 
 app.use(errorHandler);
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     error: 'Route not found',

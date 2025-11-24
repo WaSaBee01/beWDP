@@ -83,6 +83,17 @@ export const createPlan = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ error: 'Internal server error', message: 'Failed to create plan' });
   }
 };
+export const deletePlan = async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'User not authenticated' });
+    const { id } = req.params;
+    const plan = await Plan.findByIdAndDelete(id);
+    if (!plan) return res.status(404).json({ error: 'Not found', message: 'Plan not found' });
+    return res.status(200).json({ success: true, message: ' deleted successfully' });
+  } catch {
+    return res.status(500).json({ error: 'Internal server error', message: 'Failed to delete plan' });
+  }
+};
 
 export const updatePlan = async (req: AuthRequest, res: Response) => {
   try {
@@ -122,16 +133,5 @@ export const updatePlan = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deletePlan = async (req: AuthRequest, res: Response) => {
-  try {
-    if (!req.user) return res.status(401).json({ error: 'Unauthorized', message: 'User not authenticated' });
-    const { id } = req.params;
-    const plan = await Plan.findByIdAndDelete(id);
-    if (!plan) return res.status(404).json({ error: 'Not found', message: 'Plan not found' });
-    return res.status(200).json({ success: true, message: ' deleted successfully' });
-  } catch {
-    return res.status(500).json({ error: 'Internal server error', message: 'Failed to delete plan' });
-  }
-};
 
 

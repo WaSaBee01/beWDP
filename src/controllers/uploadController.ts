@@ -36,7 +36,6 @@ const configureCloudinary = (): void => {
   console.log('✅ Cloudinary configured successfully');
 };
 
-// Configure multer for memory storage
 const storage = multer.memoryStorage();
 export const upload = multer({
   storage,
@@ -68,7 +67,6 @@ export const uploadImage = async (req: AuthRequest, res: Response): Promise<void
       });
     }
 
-    // Ensure Cloudinary is configured (lazy initialization)
     try {
       configureCloudinary();
     } catch (configError) {

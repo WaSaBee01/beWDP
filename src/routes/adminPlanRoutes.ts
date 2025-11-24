@@ -9,6 +9,7 @@ router.use(requireRole('admin') as any);
 
 router.get('/', getAllPlans as any);
 router.post('/', createPlan as any);
+
 router.put('/:id', updatePlan as any);
 router.delete('/:id', deletePlan as any);
 

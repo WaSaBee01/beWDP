@@ -56,7 +56,6 @@ export const getExerciseComments = async (req: AuthRequest, res: Response): Prom
   }
 };
 
-// Create a new comment
 export const createExerciseComment = async (req: AuthRequest, res: Response): Promise<void | Response> => {
   try {
     if (!req.user) {
@@ -86,7 +85,6 @@ export const createExerciseComment = async (req: AuthRequest, res: Response): Pr
       });
     }
 
-    // If parentCommentId is provided, verify it exists and belongs to the same exercise
     if (parentCommentId) {
       const parentComment = await Comment.findOne({
         _id: parentCommentId,
@@ -110,12 +108,10 @@ export const createExerciseComment = async (req: AuthRequest, res: Response): Pr
 
     await comment.save();
 
-    // Populate user info
     await comment.populate('userId', 'name email avatar');
 
     const commentData = comment.toObject();
     
-    // If it's a reply, return it as a reply object
     if (parentCommentId) {
       return res.status(201).json({
         success: true,
@@ -130,7 +126,6 @@ export const createExerciseComment = async (req: AuthRequest, res: Response): Pr
       });
     }
 
-    // Otherwise return as a top-level comment with empty replies array
     return res.status(201).json({
       success: true,
       data: {
@@ -177,7 +172,6 @@ export const deleteExerciseComment = async (req: AuthRequest, res: Response): Pr
       });
     }
 
-    // Check if user is the owner or admin
     const isOwner = String(comment.userId) === String(req.user._id);
     const isAdmin = req.user.role === 'admin';
 
@@ -188,7 +182,6 @@ export const deleteExerciseComment = async (req: AuthRequest, res: Response): Pr
       });
     }
 
-    // If it's a top-level comment, also delete all its replies
     if (!comment.parentCommentId) {
       await Comment.deleteMany({ parentCommentId: commentId });
     }
