@@ -58,9 +58,10 @@ export const sendMealReminderEmail = async (params: {
   const html = `
     <h2>Xin chào ${userName},</h2>
     <p>Bạn có kế hoạch ăn <strong>${mealName}</strong> vào lúc <strong>${time}</strong> ngày <strong>${dateLabel}</strong>.</p>
+  
     <p>Nhớ chuẩn bị trước để đảm bảo dinh dưỡng nhé!</p>
-    <p>Chúc bạn một ngày tốt lành!</p>
-    <p>GymNet</p>
+    <p>Chúc bạn có bữa ăn ngon miệng!</p>
+    <p>PerFit</p>
   `;
 
   await sendEmail({ to, subject, html });
@@ -79,8 +80,8 @@ export const sendExerciseReminderEmail = async (params: {
     <h2>Xin chào ${userName},</h2>
     <p>Bạn có lịch tập <strong>${exerciseName}</strong> vào lúc <strong>${time}</strong> ngày <strong>${dateLabel}</strong>.</p>
     <p>Chuẩn bị đồ tập và khởi động nhẹ để đạt hiệu quả tốt nhất!</p>
-    <p>Chúc bạn một ngày tốt lành!</p>
-    <p>GymNet</p>
+    <p>Chúc bạn có buổi tập hiệu quả!</p>
+    <p>PerFit</p>
   `;
 
   await sendEmail({ to, subject, html });
